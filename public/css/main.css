@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap");
 
 /* Layout */
 .navdiv {
-  font-family: 'Roboto', sans-serif;
+  font-family:'EB Garamond', serif;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .navbar{
-  font-family: 'Roboto', sans-serif;
+  font-family:'EB Garamond', serif;
   align-items: center;
   padding: 20px;
   background-color: #333;
@@ -18,7 +18,7 @@
 }
 
 .title{
-  font-family: 'Roboto', sans-serif;
+  font-family:'EB Garamond', serif;
   align-items: center;
   display: flex;
   text-align: center;
@@ -41,7 +41,7 @@
 }
 
 .hero-text {
-  font-family: 'Roboto', sans-serif;
+  font-family:'EB Garamond', serif;
   position: absolute;
   top: 50%;
   left: 50%;
