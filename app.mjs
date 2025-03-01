@@ -1,27 +1,51 @@
-// app.mjs
 import express from 'express';
 import path from 'path';
+import hbs from 'hbs';
 import url from 'url';
-import fs from 'fs';
 
 
-export let server = null;
-export const app = express();
-
-server = app.listen(3000);
-console.log('Server started; type CTRL+C to shut down');
-
-app.set('view engine', 'hbs');
+// Initialize app
+const app = express();
+const port = process.env.PORT || 3000;
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+// Set up view engine
+// app.engine('hbs', hbs.engine({
+//   extname: 'hbs',
+//   defaultLayout: 'layout',
+//   layoutsDir: path.join(__dirname, 'views'),
+// }));
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({extended: false}));
-app.use((req, res, next) => {
-    console.log(req.method);
-    console.log(req.path);
-    console.log(req.query);
-    next();
+
+// Routes
+app.get('/', (req, res) => {
+  res.render('home');
 });
 
-app.get('/', (req, res) => {
-  res.render('mainPage');
+app.get('/login', (req, res) => {
+  res.render('login');
 });
+
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
+
+app.get('/destinations', (req, res) => {
+  res.render('destinations');
+});
+
+app.get('/about', (req, res) => {
+  res.render('about');
+});
+
+app.get('/contact', (req, res) => {
+  res.render('contact');
+});
+
+// Start server
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+}); 
