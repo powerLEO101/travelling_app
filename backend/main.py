@@ -22,13 +22,14 @@ client = anthropic.Anthropic(
 
 @app.post("api/user/register")
 def add_user(person: UserModel):
-  user_db[str(uuid4())] = person.dict()
+  user_db[str(uuid4())] = person.model_dump()
   return user_db
 
-@app.get("/pair_user/{user_id}")
+@app.get("/api/user/get_matches/{user_id}")
 def pair_user(user_id: str):
   if user_id not in user_db:
     raise HTTPException(status_code=404, detail="User not found")
+  
   person = user_db[user_id]
   message = client.messages.create(
     model="claude-3-7-sonnet-20250219",
