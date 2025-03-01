@@ -3,6 +3,10 @@ import anthropic
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from uuid import uuid4
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class UserModel(BaseModel):
   name: str
