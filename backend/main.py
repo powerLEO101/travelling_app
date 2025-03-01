@@ -4,35 +4,48 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from uuid import uuid4
 
-class PersonRequest(BaseModel):
+class UserModel(BaseModel):
   name: str
   age: int
   budget: int
   travel_days: int
   location: str
-  hobbies: list[str]
-  preferred_activities: list[str]
-  description: str
+  interests: list[str]
+  bio: str
 
 app = FastAPI()
-data = {}
-data_by_location = {}
+user_db = {}
 
 client = anthropic.Anthropic(
   api_key=os.environ.get(os.environ.get("CLAUDE_API_KEY")),
 )
 
-@app.post("/add_user")
-def add_user(person: PersonRequest):
-  data[str(uuid4())] = person.dict()
-  if person.location in data_by_location: data_by_location[person.location].append(person)
-  else: data_by_location[person.location] = [person]
-  return data
+@app.post("api/user/register")
+def add_user(person: UserModel):
+  user_db[str(uuid4())] = person.model_dump()
+  return user_db
 
-@app.get("/pair_user/{user_id}")
+@app.get("/api/user/get_matches/{user_id}")
 def pair_user(user_id: str):
-  if user_id not in data:
+  if user_id not in user_db:
     raise HTTPException(status_code=404, detail="User not found")
-  person = data[user_id]
-
+  
+  person = user_db[user_id]
+  message = client.messages.create(
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=1000,
+    temperature=1,
+    system="You are a travel agent who specializes in connecting clients to others with similar interests and personalities who would enjoy traveling together.",
+    messages=[
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "Why is the ocean salty?"
+          }
+        ]
+      }
+    ]
+  )
 
